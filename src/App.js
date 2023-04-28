@@ -5,6 +5,8 @@ import UserProfile from './components/Profile/UserProfile';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import MailBoxPage from './pages/MailBoxPage';
+import InboxPage from './pages/InboxPage';
+import OutboxPage from './pages/OutboxPage';
 
 function App() {
   const isAuth=useSelector(state=>state.auth.isAuthenticated)
@@ -15,6 +17,8 @@ function App() {
         <Route path='/auth' element={<AuthPage />} />
         <Route path='/profile' element={<UserProfile />} />
         <Route path='/mail' element={<MailBoxPage />} />
+        <Route path='/inbox' element={<InboxPage />} />
+        <Route path='/outbox' element={<OutboxPage />} />
         </Routes>
     </Layout>
   );

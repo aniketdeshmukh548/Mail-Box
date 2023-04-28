@@ -2,20 +2,30 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import classes from './MailBox.module.css'
 import { useRef } from "react";
+import { useContext } from "react";
+import AuthContext from "../../Store/auth-context";
+import { useState } from "react";
 const MailBox = () => {
+    const {inboxdata}=useContext(AuthContext)
     const enterTO=useRef();
     const enterSub=useRef();
+    const [enterDescription,setenterDescription]=useState('')
+    const updateTextDescription = (event) => {
+        setenterDescription(event.blocks[0].text);   
+      };
     const userLocalid=localStorage.getItem('localId');
-    console.log(userLocalid)
     const submitHandler=(event)=>{
         event.preventDefault();
         const TO=enterTO.current.value;
         const SUB=enterSub.current.value;
+        const DESCRIPTION=enterDescription;
+        inboxdata(TO,SUB,DESCRIPTION)
         fetch(`https://mail-box-react-default-rtdb.firebaseio.com/MailBox/${userLocalid}.json`,{
             method:'POST',
             body:JSON.stringify({
                 To:TO,
                 Subject:SUB,
+                Description:DESCRIPTION,
                 returnSecureToken: true,
             }),
             headers:{'Content-Type':'application/JSON'}
@@ -61,12 +71,13 @@ const MailBox = () => {
         </div>
       <div className={classes.text}>
       <Editor
-        
         wrapperClassName="wrapper-class"
         editorClassName="editor"
         toolbarClassName="toolbar-class"
-        required
-      />
+        required value={enterDescription} onChange={updateTextDescription}
+      >
+      </Editor>
+
       </div>
       <button type="submit">Send</button>
     </form>
