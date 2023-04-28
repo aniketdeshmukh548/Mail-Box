@@ -1,13 +1,14 @@
 import { useState, useRef } from 'react';
 import classes from './AuthForm.module.css';
 import { useNavigate } from 'react-router-dom';
-
+import {useDispatch} from 'react-redux'
+import { authAction } from '../../Store-Redux/authSlice';
 const AuthForm = () => {
   const emailInputRef=useRef();
   const passRef=useRef();
   const confirmpassRef=useRef();
   const navigateMail=useNavigate()
-
+  const dispatch=useDispatch()
   const [isLogin, setIsLogin] = useState(true);
   const [load,setLoad]=useState(false)
   const switchAuthModeHandler = () => {
@@ -15,6 +16,7 @@ const AuthForm = () => {
   };
 
   const submitHandler=(event)=>{
+    dispatch(authAction.isLogin())
     event.preventDefault();
     const enteredEmail=emailInputRef.current.value;
     const enteredPass=passRef.current.value;
@@ -50,6 +52,9 @@ const AuthForm = () => {
           })
         }
       }).then(data=>{
+        localStorage.setItem('localId',data.localId)
+       dispatch(authAction.isLogin(data.localId))
+        dispatch(authAction.isLogin(data.idToken))
         console.log(data)
         navigateMail('/mail')
       }).catch(err=>{
