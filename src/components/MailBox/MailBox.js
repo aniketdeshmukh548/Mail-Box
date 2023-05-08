@@ -13,14 +13,16 @@ const MailBox = () => {
     const updateTextDescription = (event) => {
         setenterDescription(event.blocks[0].text);   
       };
-    const userLocalid=localStorage.getItem('localId');
+    let emailID=localStorage.getItem('email');
+   let cleanEmail = emailID.replace(/[@.]/g, "");
+    console.log(cleanEmail)
     const submitHandler=(event)=>{
         event.preventDefault();
         const TO=enterTO.current.value;
         const SUB=enterSub.current.value;
         const DESCRIPTION=enterDescription;
         inboxdata(TO,SUB,DESCRIPTION)
-        fetch(`https://mail-box-react-default-rtdb.firebaseio.com/MailBox/${userLocalid}.json`,{
+        fetch(`https://mail-box-react-default-rtdb.firebaseio.com/MailBox/${cleanEmail}/SentMail.json`,{
             method:'POST',
             body:JSON.stringify({
                 To:TO,
@@ -44,6 +46,39 @@ const MailBox = () => {
               console.log(data);
               console.log("mail sent successfully");
               alert("mail sent successfully")
+            })
+            .catch((err) => {
+              alert(err.message);
+            });
+
+
+            let ToEmail=TO.replace(/[@.]/g, "");
+            console.log(ToEmail)
+
+            fetch(`https://mail-box-react-default-rtdb.firebaseio.com/MailBox/${ToEmail}/ReceivedMail.json`,{
+            method:'POST',
+            body:JSON.stringify({
+                To:TO,
+                Subject:SUB,
+                Description:DESCRIPTION,
+                READ:false,
+            }),
+            headers:{'Content-Type':'application/JSON'}
+        }).then(res=>{
+            if(res.ok){
+                return res.json()
+            }
+            else {
+                return res.json().then((data) => {
+                  let errorMessage = "Authentication failed";
+                  throw new Error(errorMessage);
+                });
+              }
+            })
+            .then((data) => {
+              console.log(data);
+              //console.log("mail sent successfully");
+             // alert("mail sent successfully")
             })
             .catch((err) => {
               alert(err.message);

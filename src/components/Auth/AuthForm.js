@@ -53,8 +53,11 @@ const AuthForm = () => {
         }
       }).then(data=>{
         localStorage.setItem('localId',data.localId)
+        localStorage.setItem('email',data.email)
+        localStorage.setItem('idToken',data.idToken)
        dispatch(authAction.isLogin(data.localId))
         dispatch(authAction.isLogin(data.idToken))
+        dispatch(authAction.isLogin(data.email))
         console.log(data)
         navigateMail('/mail')
       }).catch(err=>{

@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import MailBoxPage from './pages/MailBoxPage';
 import InboxPage from './pages/InboxPage';
 import OutboxPage from './pages/OutboxPage';
+import Details from './pages/DelatilsPage';
 
 function App() {
   const isAuth=useSelector(state=>state.auth.isAuthenticated)
@@ -14,11 +15,12 @@ function App() {
     <Layout>
       <Routes>
         <Route path='/' exact element={<HomePage />}></Route>
-        <Route path='/auth' element={<AuthPage />} />
+        {!isAuth && <Route path='/auth' element={<AuthPage />} />}
         <Route path='/profile' element={<UserProfile />} />
         <Route path='/mail' element={<MailBoxPage />} />
         <Route path='/inbox' element={<InboxPage />} />
         <Route path='/outbox' element={<OutboxPage />} />
+        <Route path='/details/:id' element={<Details />}/>
         </Routes>
     </Layout>
   );

@@ -21,4 +21,14 @@
   .list{
     margin: 0 5rem;
     mask-type: unset;
+    list-style-type: none;
+  }
+  .notification{
+    background-color: #4ca11e;
+    color: white;
+    text-decoration: none;
+    padding: 5px 16px;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
   }

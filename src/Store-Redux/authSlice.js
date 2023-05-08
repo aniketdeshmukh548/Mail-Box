@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initalAuthState={isAuthenticated:false,token:'',localid:''}
+const initalAuthState={isAuthenticated:false,token:'',localid:'',email:''}
 const authSlice=createSlice({
     name:'auth',
     initialState:initalAuthState,
@@ -8,6 +8,7 @@ const authSlice=createSlice({
         isLogin(state,action){
             state.token=action.payload;
             state.isAuthenticated=true;
+            state.email=action.payload;
         },
         isLogout(state,action){
             state.localid=action.payload;
