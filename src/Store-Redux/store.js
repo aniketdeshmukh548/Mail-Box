@@ -1,9 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit'
 
 import authReducer from './authSlice';
+import seenUnseenreducer from './seenUnseenSlice';
 const store=configureStore({
     reducer:{
-        auth:authReducer,
+        auth:authReducer,seen:seenUnseenreducer
     }
 })
 
