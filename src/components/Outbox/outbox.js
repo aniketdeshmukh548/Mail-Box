@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import classes from './outbox.module.css'
+import { useEffect } from 'react';
 
 const OutBox=()=>{
     const [outbox,setOutbox]=useState('')
@@ -25,18 +26,30 @@ const OutBox=()=>{
             }
           })
           .then((data) => {
-            console.log(data);
-            setOutbox(data)
+           // console.log(data);
+           setOutbox(data)
           });
       };
-      console.log(outbox)
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          showHandler();
+        }, 3000)
+        return () => clearInterval(interval)
+      }, );
+
+      const values=Object.values(outbox)
+      //console.log(values)
+      
     return(
         <>
         <h1 className={classes.heading}>OutBox Items</h1>
         <div className={classes.feedback}>
         <button onClick={showHandler}>Show</button>
       </div>
-        {outbox.data}
+      {values.map(val=><ul key={outbox.id}>
+        <li className={classes.list}>Description:{val.Description} Subject:{val.Subject} To:{val.To}</li>
+      </ul>)}
         </>
 
     )

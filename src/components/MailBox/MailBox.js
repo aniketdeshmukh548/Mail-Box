@@ -15,7 +15,7 @@ const MailBox = () => {
       };
     let emailID=localStorage.getItem('email');
    let cleanEmail = emailID.replace(/[@.]/g, "");
-    console.log(cleanEmail)
+   // console.log(cleanEmail)
     const submitHandler=(event)=>{
         event.preventDefault();
         const TO=enterTO.current.value;

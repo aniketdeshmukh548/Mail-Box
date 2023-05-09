@@ -3,6 +3,7 @@ import classes from "./inbox.module.css";
 import AuthContext from "../../Store/auth-context";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Inbox = (props) => {
   const [inbox, setInbox] = useState([]);
@@ -11,29 +12,36 @@ const Inbox = (props) => {
   const emailID=localStorage.getItem('email')
   let cleanEmail = emailID.replace(/[@.]/g, "");
 
-  const showHandler = (event) => {
-    fetch(
-      `https://mail-box-react-default-rtdb.firebaseio.com/MailBox/${cleanEmail}/ReceivedMail.json`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/JSON" },
-      }
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            let errorMessage = "Authentication failed";
-            throw new Error(errorMessage);
+    const showHandler = (event) => {
+        fetch(
+          `https://mail-box-react-default-rtdb.firebaseio.com/MailBox/${cleanEmail}/ReceivedMail.json`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/JSON" },
+          }
+        )
+          .then((res) => {
+            if (res.ok) {
+              return res.json();
+            } else {
+              return res.json().then((data) => {
+                let errorMessage = "Authentication failed";
+                throw new Error(errorMessage);
+              });
+            }
+          })
+          .then((data) => {
+            //console.log(data);
+            setInbox(data)
           });
-        }
-      })
-      .then((data) => {
-        console.log(data);
-        setInbox(data);
-      });
-  };
+    };
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        showHandler();
+      }, 3000)
+      return () => clearInterval(interval)
+    }, );
   
   const deleteHandler=(event)=>{
        event.preventDefault();
