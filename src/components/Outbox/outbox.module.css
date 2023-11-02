@@ -1,0 +1,37 @@
+
+.heading{
+    text-align: center;
+  color: rgb(198, 26, 26);
+  font-size: 3rem;
+}
+.feedback button {
+  background-color : #31B0D5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border-color: #46b8da;
+  position: relative;
+  margin: 0;
+position: absolute;
+top: 50%;
+-ms-transform: translateY(50%);
+transform: translateY(50%);
+}
+.back button {
+  background-color : #31B0D5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border-color: #46b8da;
+  position: absolute ;
+  margin: 0;
+position: absolute;
+top: 58%;
+-ms-transform: translateY(50%);
+transform: translateY(50%);
+}
+.list{
+  margin: 0 5rem;
+  mask-type: unset;
+  list-style-type: none;
+}
