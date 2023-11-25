@@ -37,7 +37,7 @@ const OutBox=()=>{
       useEffect(() => {
         const interval = setInterval(() => {
           showHandler();
-        }, 3000)
+        }, 1000)
         return () => clearInterval(interval)
       }, );
 
@@ -62,7 +62,7 @@ const OutBox=()=>{
           </ul>
         ))
       ) : (
-        <p>No emails in the outbox</p>
+        <p></p>
       )}
         </>
 

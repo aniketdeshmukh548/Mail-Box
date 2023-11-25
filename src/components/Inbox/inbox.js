@@ -45,7 +45,7 @@ const Inbox = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       showHandler();
-    }, 3000);
+    }, 1000);
     return () => clearInterval(interval);
   });
 
