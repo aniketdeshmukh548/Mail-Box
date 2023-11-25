@@ -14,56 +14,63 @@ const AuthForm = () => {
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
-
-  const submitHandler=(event)=>{
-    dispatch(authAction.isLogin())
+  const submitHandler = (event) => {
+    dispatch(authAction.isLogin());
     event.preventDefault();
-    const enteredEmail=emailInputRef.current.value;
-    const enteredPass=passRef.current.value;
-    const confirmPassword=confirmpassRef.current.value;
+    const enteredEmail = emailInputRef.current.value;
+    const enteredPass = passRef.current.value;
+    const confirmPassword = confirmpassRef.current.value;
     setLoad(true);
     let url;
-    if(isLogin){
-      url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD2cscbhhl2PHO0lD5alxIQQHudC5OHxh4'
+    if (isLogin) {
+      url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD2cscbhhl2PHO0lD5alxIQQHudC5OHxh4';
+    } else {
+      url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD2cscbhhl2PHO0lD5alxIQQHudC5OHxh4';
     }
-    else{
-      url='https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD2cscbhhl2PHO0lD5alxIQQHudC5OHxh4'
-    }
-    
-    fetch(url,
-      {
-        method:'POST',
-        body:JSON.stringify({
-          email:enteredEmail,
-          password:enteredPass,
-          confirm:confirmPassword,
-          returnSecureToken:true,
-        }),
-        headers:{'Content-Type':'application/JSON'}
-      }).then((res)=>{
-        setLoad(false)
-        if(res.ok){
+
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        email: enteredEmail,
+        password: enteredPass,
+        confirm: confirmPassword,
+        returnSecureToken: true,
+      }),
+      headers: { 'Content-Type': 'application/JSON' },
+    })
+      .then((res) => {
+        setLoad(false);
+        if (res.ok) {
           return res.json();
-        }
-        else{
-          return res.json().then(data=>{
-            let errorMessage='Authentication Failed!'
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = 'Authentication Failed!';
             throw new Error(errorMessage);
-          })
+          });
         }
-      }).then(data=>{
-        localStorage.setItem('localId',data.localId)
-        localStorage.setItem('email',data.email)
-        localStorage.setItem('idToken',data.idToken)
-       dispatch(authAction.isLogin(data.localId))
-        dispatch(authAction.isLogin(data.idToken))
-        dispatch(authAction.isLogin(data.email))
-        console.log(data)
-        navigateMail('/mail')
-      }).catch(err=>{
-        alert(err.message)
       })
-  }
+      .then((data) => {
+        setLoad(false);
+        if (data.error) {
+          alert(data.error.message);
+        } else {
+          localStorage.setItem('localId', data.localId);
+          localStorage.setItem('email', data.email);
+          localStorage.setItem('idToken', data.idToken);
+          dispatch(authAction.isLogin(data.localId));
+          dispatch(authAction.isLogin(data.idToken));
+          dispatch(authAction.isLogin(data.email));
+          console.log(data);
+          navigateMail('/mail');
+        }
+      })
+      .catch((err) => {
+        setLoad(false);
+        alert(err.message);
+      });
+  };
   return (
     <>
     <section className={classes.auth}>
